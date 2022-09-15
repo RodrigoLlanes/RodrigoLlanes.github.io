@@ -152,7 +152,7 @@ function loadCubo(lado)
   malla.setAttribute( 'uv', new THREE.Float32BufferAttribute(uvs,2));
 
   // Configura un material
-  var textura = new THREE.TextureLoader().load( '../images/ilovecg.png' );
+  var textura = new THREE.TextureLoader().load( './images/ilovecg.png' );
   var material = new THREE.MeshLambertMaterial( { vertexColors: true, map: textura, side: THREE.DoubleSide } );
 
   // Construye el objeto grafico 

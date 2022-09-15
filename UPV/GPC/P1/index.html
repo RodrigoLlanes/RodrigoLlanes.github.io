@@ -1,31 +1,28 @@
 <!doctype html>
-<!-- 
-  Ejemplos sobre Three.js : Cubo texturado animado
-   	Cubo con color por vertice y mapa uv sobre textura en cruz;
-   	Util para comprobar si funciona Threejs sobre el navegador.
-  rvivo@upv.es 2022
--->
 <html lang="es">
 	<head>
 		<meta charset='utf-8'>
-		<title>Threejs App</title>
+		<title>Practica 1</title>
 		<style>
 			body {
-				background-color: #000;
+				background-color: black;
 				margin: 0px;
 				overflow: hidden;
 			}
 		</style>
 	</head>
-	<body>
+	<body onload="main()">
 		<!-- Contenedor del app -->
-		<div id="container"></div>
-
+		<canvas id="canvas" width="500" height="500"></canvas>
+        
 		<!-- Scripts de biblioteca -->
-		<script src="../lib/three.min_r140.js"></script>
-		<script src="../lib/OrbitControls.js"></script>
+        <script src="../lib/webgl-utils.js"></script>
+        <script src="../lib/webgl-debug.js"></script>
+        <script src="../lib/cuon-utils.js"></script>
+        <script src="../lib/cuon-matrix.js"></script>
 
-		<script src="../js/test.js"></script>
 
+        <!-- Mi código -->
+        <script src="./p1.js"></script>
 	</body>
 </html>
