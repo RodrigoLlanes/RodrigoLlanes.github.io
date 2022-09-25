@@ -11,18 +11,17 @@
 			}
 		</style>
 	</head>
-	<body onload="main()">
+	<body>
 		<!-- Contenedor del app -->
-		<canvas id="canvas" width="500" height="500"></canvas>
+        <canvas id="canvas"></canvas>
         
-		<!-- Scripts de biblioteca -->
-        <script src="../lib/webgl-utils.js"></script>
+        <!-- Librerias necesarias -->
         <script src="../lib/webgl-debug.js"></script>
+        <script src="../lib/webgl-utils.js"></script>
         <script src="../lib/cuon-utils.js"></script>
         <script src="../lib/cuon-matrix.js"></script>
 
-
         <!-- Mi código -->
-        <script src="./p1.js"></script>
-	</body>
+        <script type="module" src="./p1.js"></script>
+    </body>
 </html>

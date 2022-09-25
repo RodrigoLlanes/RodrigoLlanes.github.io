@@ -31,6 +31,8 @@ let nearColor;
 let farColor;
 let center;
 
+main();
+
 function main() {
     const canvas = document.getElementById("canvas");
     const gl = getWebGLContext(canvas);
