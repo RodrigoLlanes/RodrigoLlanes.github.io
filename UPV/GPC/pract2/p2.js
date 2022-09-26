@@ -3,6 +3,12 @@ import * as THREE from "../lib/three.module.js";
 
 var renderer, scene, camera;
 
+const bw = 20;
+const bd = 4;
+const h  = 19;
+const tw = 10;
+const td = 2;
+
 // Acciones
 init();
 loadScene();
@@ -20,6 +26,18 @@ function init() {
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
     camera.position.set(200, 275, 200);
     camera.lookAt(0, 1, 0);
+}
+
+
+function planeNormal(vertices, a, b, c) {
+    var a = new THREE.Vector3(vertices[a*3], vertices[a*3 +1], vertices[a*3 +2]);
+    var b = new THREE.Vector3(vertices[b*3], vertices[b*3 +1], vertices[b*3 +2]);
+    var c = new THREE.Vector3(vertices[c*3], vertices[c*3 +1], vertices[c*3 +2]);
+    b.sub(a);
+    c.sub(a);
+    a.crossVectors(b, c);
+    a.normalize();
+    return a;
 }
 
 
@@ -66,24 +84,84 @@ function loadScene() {
     const left_hand = new THREE.Mesh(new THREE.BoxGeometry(20, 19, 4, 1, 1, 1), material_robot);
     const geometry = new THREE.BufferGeometry();
     const vertices = new Float32Array( [
-	     10,  0, -2,
-        -10,  0, -2,
-         10,  0,  2,
-        -10,  0,  2,
+	     bw/2, 0, -bd/2,  // Bottom
+        -bw/2, 0, -bd/2,
+         bw/2, 0,  bd/2,
+        -bw/2, 0,  bd/2,
 
-          5, 19,  0,
-         -5, 19,  0,
-          5, 19,  2,
-         -5, 19,  2
+         bw/2, 0,  bd/2,  // Front
+        -bw/2, 0,  bd/2,
+         tw/2, h,  bd/2,
+        -tw/2, h,  bd/2,
+        
+         bw/2, 0, -bd/2,  // Back
+        -bw/2, 0, -bd/2,
+         tw/2, h,  bd/2 - td,
+        -tw/2, h,  bd/2 - td,
+
+         bw/2, 0, -bd/2,  // Left
+         bw/2, 0,  bd/2,
+         tw/2, h,  bd/2 - td,
+         tw/2, h,  bd/2,
+
+        -bw/2, 0, -bd/2,  // Right
+        -bw/2, 0,  bd/2,
+        -tw/2, h,  bd/2 - td,
+        -tw/2, h,  bd/2,
+
+         tw/2, h,  bd/2 - td,  // Top
+        -tw/2, h,  bd/2 - td,
+         tw/2, h,  bd/2,
+        -tw/2, h,  bd/2
     ]);
+
+    const bot_n = planeNormal(vertices,  0,  2,  1);
+    const fro_n = planeNormal(vertices,  4,  6,  5);
+    const bac_n = planeNormal(vertices,  8,  9, 10);
+    const lef_n = planeNormal(vertices, 12, 14, 13);
+    const rig_n = planeNormal(vertices, 16, 17, 18);
+    const top_n = planeNormal(vertices, 20, 21, 22);
+    const normals = new Float32Array( [
+	    bot_n.x, bot_n.y, bot_n.z,  // Bottom  
+        bot_n.x, bot_n.y, bot_n.z,  
+        bot_n.x, bot_n.y, bot_n.z,
+        bot_n.x, bot_n.y, bot_n.z,
+
+        fro_n.x, fro_n.y, fro_n.z,  // Front
+        fro_n.x, fro_n.y, fro_n.z,
+        fro_n.x, fro_n.y, fro_n.z,
+        fro_n.x, fro_n.y, fro_n.z,
+
+        bac_n.x, bac_n.y, bac_n.z,  // Back
+        bac_n.x, bac_n.y, bac_n.z, 
+        bac_n.x, bac_n.y, bac_n.z, 
+        bac_n.x, bac_n.y, bac_n.z, 
+
+        lef_n.x, lef_n.y, lef_n.z,  // Left
+        lef_n.x, lef_n.y, lef_n.z,
+        lef_n.x, lef_n.y, lef_n.z,
+        lef_n.x, lef_n.y, lef_n.z,
+
+        rig_n.x, rig_n.y, rig_n.z,  // Right
+        rig_n.x, rig_n.y, rig_n.z,
+        rig_n.x, rig_n.y, rig_n.z,
+        rig_n.x, rig_n.y, rig_n.z,
+
+        top_n.x, top_n.y, top_n.z,  // Top
+        top_n.x, top_n.y, top_n.z,
+        top_n.x, top_n.y, top_n.z,
+        top_n.x, top_n.y, top_n.z
+    ]);
+
     geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+    geometry.setAttribute("normal", new THREE.BufferAttribute(vertices, 3));
     const indexes = [
-        0,1,2, 2,3,1,
-        4,5,6, 6,7,5, 
-        0,2,4, 4,2,6, 
-        0,4,1, 1,5,4, 
-        1,5,7, 7,1,3, 
-        3,6,7, 2,3,6
+         0, 1, 2,  1, 2, 3,  // Bottom
+         4, 5, 6,  5, 6, 7,  // Front
+         8, 9,10,  9,10,11,  // Back
+        12,13,14, 13,14,15,  // Left
+        16,17,18, 17,18,19,  // Right
+        20,21,22, 21,22,23   // Top
         ];
     geometry.setIndex(indexes);
 
