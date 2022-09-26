@@ -24,7 +24,7 @@ function init() {
     scene.background = new THREE.Color(0.5, 0.5, 0.5);
     
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.set(200, 275, 200);
+    camera.position.set(200, 300, 200);
     camera.lookAt(0, 1, 0);
 }
 
@@ -156,12 +156,12 @@ function loadScene() {
     geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
     geometry.setAttribute("normal", new THREE.BufferAttribute(vertices, 3));
     const indexes = [
-         0, 1, 2,  1, 2, 3,  // Bottom
-         4, 5, 6,  5, 6, 7,  // Front
-         8, 9,10,  9,10,11,  // Back
-        12,13,14, 13,14,15,  // Left
-        16,17,18, 17,18,19,  // Right
-        20,21,22, 21,22,23   // Top
+        1, 0, 2,  1, 2, 3,  // Bottom
+        5, 4, 6,  5, 6, 7,  // Front
+        8, 9,10,    10,9,11,  // Back
+        13,12,14, 13,14,15,  // Left
+        16,17,18, 18,17,19,  // Right
+        20,21,22, 22,21,23   // Top
         ];
     geometry.setIndex(indexes);
 
