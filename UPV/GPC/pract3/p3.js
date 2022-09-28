@@ -44,7 +44,7 @@ function planeNormal(vertices, a, b, c) {
 function loadScene() {
     const material_suelo = new THREE.MeshBasicMaterial({color: 'yellow', wireframe: true});
     const material_selec = new THREE.MeshBasicMaterial({color: 'black', wireframe: true});
-    const material_robot = new THREE.MeshBasicMaterial({color: 'red', wireframe: false});
+    const material_robot = new THREE.MeshNormalMaterial({wireframe: false});
 
     const suelo = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000, 100, 100), material_suelo);
     suelo.rotation.x = -Math.PI/2;
