@@ -1,7 +1,10 @@
 //import {GLTFLoader} from "../lib/GLTFLoader.module.js";
 import * as THREE from "../lib/three.module.js";
+import {OrbitControls} from "../lib/OrbitControls.module.js";
 
-var renderer, scene, camera;
+var renderer, scene, camera, cameraControls;
+
+var topCamera, topCameraSize;
 
 const bw = 20;
 const bd = 4;
@@ -15,6 +18,16 @@ loadScene();
 render();
 
 
+function updateAspectRatio() {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    camera.aspect = window.innerWidth/window.innerHeight
+    camera.updateProjectionMatrix();
+
+    topCameraSize = Math.floor(Math.min(window.innerWidth, window.innerHeight)/4);
+}
+
+
 function init() {
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -26,6 +39,18 @@ function init() {
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
     camera.position.set(200, 300, 200);
     camera.lookAt(0, 1, 0);
+
+    cameraControls = new OrbitControls(camera, renderer.domElement);
+    cameraControls.target.set(0, 1, 0);
+    // TODO: Zoom 
+    // cameraControls.maxDistance = 10;
+
+    topCameraSize = Math.floor(Math.min(window.innerWidth, window.innerHeight)/4);
+    topCamera = new THREE.OrthographicCamera(-70, 70, 70, -70, 1, 1000); 
+    topCamera.position.set(0, 300, 0);
+    topCamera.lookAt(0, 0, 0);
+
+    window.addEventListener('resize', updateAspectRatio);
 }
 
 
@@ -210,6 +235,17 @@ function loadScene() {
 
 function render() {
     requestAnimationFrame(render);
+
+    renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.render(scene, camera);
+    
+    console.log(topCameraSize);
+    console.log(window.innerWidth);
+    renderer.clearDepth();
+    renderer.setScissorTest(true);
+    renderer.setScissor(0, window.innerHeight - topCameraSize, topCameraSize, topCameraSize);
+    renderer.setViewport(0, window.innerHeight - topCameraSize, topCameraSize, topCameraSize);
+    renderer.render(scene, topCamera);
+    renderer.setScissorTest(false);
 }
 
