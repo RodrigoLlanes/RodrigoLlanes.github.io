@@ -38,12 +38,12 @@ function init() {
     
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
     camera.position.set(200, 300, 200);
-    camera.lookAt(0, 1, 0);
+    camera.lookAt(0, 50, 0);
 
     cameraControls = new OrbitControls(camera, renderer.domElement);
-    cameraControls.target.set(0, 1, 0);
-    // TODO: Zoom 
-    // cameraControls.maxDistance = 10;
+    cameraControls.target.set(0, 50, 0);
+    cameraControls.minDistance = 20;
+    cameraControls.maxDistance = 900;
 
     topCameraSize = Math.floor(Math.min(window.innerWidth, window.innerHeight)/4);
     topCamera = new THREE.OrthographicCamera(-70, 70, 70, -70, 1, 1000); 
