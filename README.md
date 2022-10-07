@@ -17,11 +17,11 @@
 
 # Competitions:
 
-- :trophy:**Advent of code 2021**
+- :keyboard:**Advent of code 2021**
 [![Github repository](https://img.shields.io/badge/-Github%20repo-white?logo=github&logoColor=black)](https://github.com/RodrigoLlanes/AdventOfCode2021)
 
-- :trophy:**Advent of code 2020**
+- :keyboard:**Advent of code 2020**
 [![Github repository](https://img.shields.io/badge/-Github%20repo-white?logo=github&logoColor=black)](https://github.com/RodrigoLlanes/AdventOfCode2020)
 
-- :trophy:**Advent of code 2019**
+- :keyboard:**Advent of code 2019**
 [![Github repository](https://img.shields.io/badge/-Github%20repo-white?logo=github&logoColor=black)](https://github.com/RodrigoLlanes/AdventOfCode2019)
