@@ -10,10 +10,15 @@ import * as CANNON from '../../lib/cannon-es.module.js';
 var renderer, scene, camera;
 var ambientLight, directionalLight;
 
-var grassCube, bush, roadTile, car, signStop;
+var grassCube, bush, roadTile, car, signStop, coin;
 var waterText;
 
 const gui = new GUI();
+const debugParams = {
+    directionalLight: true,
+    ambientLight: true,
+    hitboxes: false,
+}
 
 // -1 nada; 0 en-progreso; 1 izquierda; 2 arriba; 3 derecha
 var actionCode = -1;
@@ -29,9 +34,8 @@ const cubeWidth = 80;
 var stats;
 
 
-var hitboxMaterial = new THREE.MeshBasicMaterial({color: 'red', wireframe: true});
+var hitboxMaterial = new THREE.MeshBasicMaterial({color: 'red', wireframe: true, visible: false});
 var world, playerRadius = cubeWidth * 0.4;
-var cannonDebugRenderer;
 
 
 
@@ -166,6 +170,19 @@ function updateAspectRatio() {
 
 
 function initGUI() {
+    var debugSettings = gui.addFolder('Debug Settings');
+    debugSettings.add(debugParams, 'hitboxes').name('Render Hitboxes')
+        .onChange(value => {
+            hitboxMaterial.visible = value;
+        });
+    debugSettings.add(debugParams, 'directionalLight').name('Directional Light')
+        .onChange(value => {
+            directionalLight.visible = value;
+        });
+    debugSettings.add(debugParams, 'ambientLight').name('Ambient Light')
+        .onChange(value => {
+            ambientLight.visible = value;
+        });
 }
 
 
@@ -464,7 +481,7 @@ function loadScene() {
 
 
     // Lights
-    ambientLight = new THREE.AmbientLight(0x404040);
+    ambientLight = new THREE.AmbientLight(0x999999);
     scene.add(ambientLight)
     
     directionalLight = new THREE.DirectionalLight(0xFFFFFF,1);
