@@ -34155,7 +34155,7 @@ function intersects( p1, q1, p2, q2 ) {
 
 }
 
-// for collinear points p, q, r, check if point q lies on segment pr
+// for collinear points p, q, r, check if point q lies on segment proj
 function onSegment( p, q, r ) {
 
 	return q.x <= Math.max( p.x, r.x ) && q.x >= Math.min( p.x, r.x ) && q.y <= Math.max( p.y, r.y ) && q.y >= Math.min( p.y, r.y );

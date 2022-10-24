@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset='utf-8'>
+		<title>Crossy Road Like Game</title>
+		<style>
+			body {
+				background-color: black;
+				margin: 0px;
+				overflow: hidden;
+			}
+		</style>
+
+
+		<!-- Librerias necesarias -->
+		<script type="importmap">
+		  {
+			"imports": {
+			  "three": "https://unpkg.com/three@0.145.0/build/three.module.js",
+			  "FBXloader": "https://unpkg.com/three@0.145.0/examples/jsm/loaders/FBXLoader.js"
+			}
+		  }
+		</script>
+		<script type="module" src="../lib/tween.module.min.js"></script>
+		<script type="module" src="../lib/lil-gui.module.min.js"></script>
+		<script type="module" src="../lib/stats.module.js"></script>
+		<script type="module" src="../lib/cannon-es.module.js"></script>
+	</head>
+	<body>
+		<!-- Contenedor del app -->
+		<div id="container">
+        </div>
+
+        <!-- Mi código -->
+        <script type="module" src="js/main.js"></script>
+    </body>
+</html>
