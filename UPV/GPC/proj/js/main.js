@@ -7,6 +7,7 @@ import Stats from '../../lib/stats.module.js';
 import * as CANNON from '../../lib/cannon-es.module.js';
 
 
+var pause = false;
 var renderer, scene, camera;
 var ambientLight, directionalLight;
 
@@ -290,10 +291,12 @@ function initCannon() {
     world.addBody(player.hitbox);
 
     player.hitbox.addEventListener('collide', (event) => {
-        console.log(event);
         if (event.body.isBush) {
-            // Todo: hacer más bonito
-            location.reload();
+            pause = true;
+            document.getElementById("gameover").innerHTML  = "Game Over </br>";
+            document.getElementById('result').innerHTML = document.getElementById('score').innerHTML +
+                "</br></br> Press ENTER to restart";
+            document.getElementById("score").innerHTML  = "";
         }
     });
 }
@@ -422,7 +425,6 @@ function roadRow() {
         to({x:-side * cubeWidth}, (rowSize + 1) * carTileTime).
         onStart(() => { carFadeIn().start(); }).
         onUpdate((pos) => {
-            console.log(pos);
             carMesh.position.x = pos.x;
             carHitbox.position.x = pos.x - cubeWidth * 5;
         }).onComplete(() => {
@@ -499,6 +501,9 @@ function loadScene() {
 
 function Update(time) {
     TWEEN.update(time);
+    const sec = Math.floor(time / 1000);
+    const milis = Math.floor(time) - (sec * 1000);
+    document.getElementById('score').innerHTML  = "Time:   " + sec + "'" + ('0000'+milis).slice(-3) + "s";
 
     if (actionCode > 0) {
         const action = actionCode;
@@ -550,6 +555,7 @@ function Update(time) {
 
 function render(time) {
     requestAnimationFrame(render);
+    if (pause) {return;}
     stats.update();
     
     Update(time);
@@ -562,6 +568,13 @@ function render(time) {
 
 function keyDownListener(event) {
     const keyCode = event.which;
+
+    if (pause) {
+        if (keyCode === 13) {
+            location.reload();
+        }
+        return;
+    }
 
     if (actionCode === 0) {
         return;
