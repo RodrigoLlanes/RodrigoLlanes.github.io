@@ -8,6 +8,7 @@ import * as CANNON from '../../lib/cannon-es.module.js';
 
 
 var pause = false;
+var distance = 0, speed = 0;
 var renderer, scene, camera;
 var ambientLight, directionalLight;
 
@@ -294,8 +295,8 @@ function initCannon() {
         if (event.body.isBush) {
             pause = true;
             document.getElementById("gameover").innerHTML  = "Game Over </br>";
-            document.getElementById('result').innerHTML = document.getElementById('score').innerHTML +
-                "</br></br> Press ENTER to restart";
+            document.getElementById('result').innerHTML = "<div style='color:gold'>Score: " + Math.floor(distance * speed * 100) / 100 +
+                "</div></br></br> Press ENTER to restart";
             document.getElementById("score").innerHTML  = "";
         }
     });
@@ -503,7 +504,9 @@ function Update(time) {
     TWEEN.update(time);
     const sec = Math.floor(time / 1000);
     const milis = Math.floor(time) - (sec * 1000);
+    speed = Math.floor(100000 * distance / time) / 100;
     document.getElementById('score').innerHTML  = "Time:   " + sec + "'" + ('0000'+milis).slice(-3) + "s";
+    document.getElementById('score').innerHTML  = "Distance: " + distance + "m &nbsp; &nbsp; &nbsp; Time: " + sec + "'" + ('0000'+milis).slice(-3) + "s </br> Speed: " + speed + "m/s";
 
     if (actionCode > 0) {
         const action = actionCode;
@@ -531,6 +534,7 @@ function Update(time) {
             });
             new TWEEN.Tween({n: 0}).to({n:1}, jumpTime).onComplete(() => {
                 boardOutIndex += 1;
+                distance += 1;
                 if (boardOutIndex >= board[0].depth) {
                     boardOutIndex -= board[0].depth;
                     board.shift().fadeOut();
