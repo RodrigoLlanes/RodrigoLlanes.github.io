@@ -24,7 +24,7 @@ const debugParams = {
 
 // -1 nada; 0 en-progreso; 1 izquierda; 2 arriba; 3 derecha
 var actionCode = -1;
-const rowSize = 3 * 3, boardDepth = 20, boardBack = 5;
+const rowSize = 3 * 3, boardDepth = 7, boardBack = 5;
 var playerPos = 0;
 var jumpHeight = 40;
 var board, boardIndex = - 1 - boardBack, boardOutIndex = 0;
@@ -38,7 +38,6 @@ var stats;
 
 var hitboxMaterial = new THREE.MeshBasicMaterial({color: 'red', wireframe: true, visible: false});
 var world, playerRadius = cubeWidth * 0.4;
-
 
 
 const player = {
@@ -74,7 +73,6 @@ const player = {
         get z() { return this._z; }
     }
 }
-
 
 
 // Acciones
@@ -317,7 +315,12 @@ function init() {
     document.body.appendChild(stats.dom)
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0.5, 0.5, 0.5);
+    scene.background = new THREE.Color(0.2, 0.2, 0.8);
+    const loader = new THREE.TextureLoader();
+    loader.load('./textures/Glowing-sky.jpg' , function(texture)
+    {
+        scene.background = texture;
+    });
     
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
     camera.position.set(-100, 300, -300);
