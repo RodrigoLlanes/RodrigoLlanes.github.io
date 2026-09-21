@@ -1,0 +1,66 @@
+baseURL = 'https://rodrigollanes.github.io/'
+languageCode = 'en-us'
+title = 'Rodrigo Llanes'
+theme = "scanlines"
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+
+# Markup configuration
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = false
+    [markup.goldmark.extensions]
+      # Required on the default fontFamily = "glass": Glass TTY VT220 has no
+      # curly quotes or em dashes, so leaving the typographer on makes those
+      # characters fall back to another font mid-sentence.
+      typographer = false
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
+    ordered = false
+  [markup.highlight]
+    codeFences = true
+    noClasses = false
+    lineNos = true
+    lineNumbersInTable = true
+
+# Navigation menu
+# Note: "Posts" link is auto-hidden in blog homepage mode
+[menus]
+  [[menus.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menus.main]]
+    name = "Posts"
+    url = "/posts/"
+    weight = 2
+  [[menus.main]]
+    name = "Archive"
+    url = "/archive/"
+    weight = 3
+  [[menus.main]]
+    name = "About"
+    url = "/about/"
+    weight = 4
+
+[params]
+  description = ""
+  author = "Rodrigo Llanes"
+
+  # Scanlines theme configuration
+  [params.scanlines]
+    colorScheme = "white"
+
+    [params.scanlines.effects]
+      enabled = true
+      scanlines = false
+      glow = false
+
+    [params.scanlines.social]
+      github = "rodrigollanes.github.io"
+      email = ""
+      rss = true
