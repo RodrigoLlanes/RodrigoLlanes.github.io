@@ -38,14 +38,6 @@ theme = "scanlines"
     name = "Posts"
     url = "/posts/"
     weight = 2
-  [[menus.main]]
-    name = "Archive"
-    url = "/archive/"
-    weight = 3
-  [[menus.main]]
-    name = "About"
-    url = "/about/"
-    weight = 4
 
 [params]
   description = ""
@@ -54,6 +46,7 @@ theme = "scanlines"
   # Scanlines theme configuration
   [params.scanlines]
     colorScheme = "white"
+    homepage = "profile"
 
     [params.scanlines.effects]
       enabled = true
@@ -61,6 +54,15 @@ theme = "scanlines"
       glow = false
 
     [params.scanlines.social]
-      github = "rodrigollanes.github.io"
-      email = ""
-      rss = true
+      github = "rodrigollanes"
+      linkedin = "rodrigo-llanes-lacomba-9a8998187"
+
+    [params.scanlines.profile]
+    name = "Rodrigo Llanes"
+    subtitle = "Computer engineer & Physics student"
+    bio = ""
+
+    # Buttons shown on profile homepage
+    [[params.scanlines.profile.buttons]]
+      name = "Posts"
+      url = "/posts/"
