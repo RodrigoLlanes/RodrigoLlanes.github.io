@@ -1,0 +1,3 @@
+[submodule "themes/scanlines"]
+	path = themes/scanlines
+	url = https://github.com/wthouse/scanlines
