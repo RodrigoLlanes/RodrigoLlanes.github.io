@@ -1,0 +1,150 @@
+<style>
+    html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+    }
+
+    #grafico {
+        width: 80%;
+        height: 80%;
+    }
+</style>
+
+<div>
+    <button onclick="startAnimation()">Start</button>
+    <button onclick="stopAnimation()">Stop</button>
+    <button onclick="resetAnimation()">Reset</button>
+</div>
+
+<div id="grafico"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<script src="https://cdn.plot.ly/plotly-4.1.1.min.js"></script>
+
+<script>
+	var factorialMem = [];
+	function factorial (n) {
+		if (n === 0 || n === 1) { return 1; }
+		if (factorialMem[n] > 0) { return factorialMem[n]; }
+		return factorialMem[n] = factorial(n-1) * n;
+	}
+	
+	function iterativeTaylor(x, n) {
+		let res = 0;
+		for (let k = 0; k <= n; k++) {
+			let sign = (k % 2) === 0 ? 1 : -1;
+			res += sign * Math.pow(x, 2 * k + 1) / factorial(2 * k + 1);
+		}
+		return res;
+	}
+	
+	var taylorMem = new Map();
+	function taylor(x, k) {
+		let [res, lastN] = taylorMem.get(x) || [0, -1];
+		
+		if (lastN === k) {
+			return res;
+		}
+		else if (lastN !== k-1) {
+			res = iterativeTaylor(x, k);
+		} else {
+			let sign = (k % 2) === 0 ? 1 : -1;
+			res += sign * Math.pow(x, 2 * k + 1) / factorial(2 * k + 1);
+		}
+		
+		taylorMem.set(x, [res, k]);
+		return res;
+	}
+
+    let a = 0;
+	let running = false;
+    let animationId = null;
+	
+    const x = [];
+    for (let i = -10; i <= 10; i += 0.05) {
+        x.push(i);
+    }
+
+    Plotly.newPlot("grafico", [
+        {
+            x: x,
+            y: x.map(x => Math.sin(x)),
+            mode: "lines",
+            name: "$\\sin(x)$"
+        },
+        {
+            x: x,
+            y: x.map(x => taylor(x, 0)),
+            mode: "lines",
+            name: '$\\sum_{k=0}^{' + a + '} \\frac{(-1)^k}{(2k+1)!} x^{2k+1}$',
+        }
+    ],{
+		autosize: true,
+		xaxis: {
+			range: [-10, 10]
+		},
+		yaxis: {
+			range: [-1.5, 1.5]
+		}
+	}, {
+		responsive: true,
+		staticPlot: true
+	});
+	
+    function animate() {
+		if (!running) { return; }
+		
+        a += 0.02;
+		let n = Math.floor(a)
+		
+		Plotly.restyle("grafico", {
+			y: [
+				x.map(x => Math.sin(x)),
+				x.map(x => taylor(x, n))
+			],
+			name: [
+				"$\\sin(x)$",
+				'$\\sum_{k=0}^{' + n + '} \\frac{(-1)^k}{(2k+1)!} x^{2k+1}$'
+			]
+		});
+
+        animationId = requestAnimationFrame(animate);
+    }
+
+	function startAnimation() {
+        if (running) { return; }
+
+        running = true;
+        animationId = requestAnimationFrame(animate);
+    }
+
+    function stopAnimation() {
+        running = false;
+
+        if (animationId !== null) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+        }
+    }
+
+    function resetAnimation() {
+        stopAnimation();
+
+        a = 0;
+        taylorMem.clear();
+
+		Plotly.restyle("grafico", {
+			y: [
+				x.map(x => Math.sin(x)),
+				x.map(x => taylor(x, 0))
+			],
+			name: [
+				"$\\sin(x)$",
+				'$\\sum_{k=0}^{0} \\frac{(-1)^k}{(2k+1)!} x^{2k+1}$'
+			]
+		});
+    }
+
+    animate();
+</script>
