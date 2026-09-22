@@ -1,11 +1,30 @@
 
+<style>
+    .checkbox input {
+        display: none;
+    }
+
+    .checkbox span:before {
+        content: "[ ]";
+        cursor: pointer;
+    }
+
+    .checkbox input:checked + span:before {
+        content: "[x]";
+    }
+</style>
+
 <div>
     <button onclick="startAnimation()">[Start]</button>
     <button onclick="stopAnimation()">[Stop]</button>
     <button onclick="resetAnimation()">[Reset]</button>
-    <input type="checkbox" id="interpolateCheckbox" checked />
-    <label for="interpolateCheckbox">Interpolate</label>
 </div>
+
+<label class="checkbox">
+    <input type="checkbox" id="interpolateCheckbox" checked />
+    <span></span>
+    Interpolate
+</label>
 
 <div id="grafico"></div>
 
