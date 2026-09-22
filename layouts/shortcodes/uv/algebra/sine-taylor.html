@@ -1,20 +1,10 @@
-<style>
-    html, body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-    }
-
-    #grafico {
-        width: 80%;
-        height: 80%;
-    }
-</style>
 
 <div>
-    <button onclick="startAnimation()">Start</button>
-    <button onclick="stopAnimation()">Stop</button>
-    <button onclick="resetAnimation()">Reset</button>
+    <button onclick="startAnimation()">[Start]</button>
+    <button onclick="stopAnimation()">[Stop]</button>
+    <button onclick="resetAnimation()">[Reset]</button>
+    <input type="checkbox" id="interpolateCheckbox" checked />
+    <label for="interpolateCheckbox">Interpolate</label>
 </div>
 
 <div id="grafico"></div>
@@ -58,13 +48,51 @@
 	}
 
     let a = 0;
+    let lastN = 0;
 	let running = false;
     let animationId = null;
-	
+    let interpolate = true;
+
+    const checkbox = document.getElementById("interpolateCheckbox");
+
+    checkbox.addEventListener("change", function () {
+        interpolate = this.checked;
+    });
+
     const x = [];
     for (let i = -10; i <= 10; i += 0.05) {
         x.push(i);
     }
+    let currentTaylor = x.map(x => taylor(x, 0));
+
+    const layout = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+
+        font: {
+            color: '#fff'
+        },
+        autosize: true,
+        xaxis: {
+            range: [-10, 10],
+            linecolor: '#444',
+            zerolinecolor: '#fff',
+            tickfont: { color: '#fff' },
+            gridcolor: '#444'
+        },
+        yaxis: {
+            range: [-1.5, 1.5],
+            linecolor: '#444',
+            zerolinecolor: '#fff',
+            tickfont: { color: '#fff' },
+            gridcolor: '#444'
+        }
+    };
+
+    const config = {
+        responsive: true,
+        staticPlot: true
+    };
 
     Plotly.newPlot("grafico", [
         {
@@ -79,29 +107,27 @@
             mode: "lines",
             name: '$\\sum_{k=0}^{' + a + '} \\frac{(-1)^k}{(2k+1)!} x^{2k+1}$',
         }
-    ],{
-		autosize: true,
-		xaxis: {
-			range: [-10, 10]
-		},
-		yaxis: {
-			range: [-1.5, 1.5]
-		}
-	}, {
-		responsive: true,
-		staticPlot: true
-	});
+    ], layout, config);
 	
     function animate() {
 		if (!running) { return; }
 		
         a += 0.02;
-		let n = Math.floor(a)
-		
+		let n = Math.floor(a);
+        if (lastN !== n) {
+            lastN = n;
+            currentTaylor = x.map(x => taylor(x, n));
+            console.log(n);
+        }
+
+        let percentage = a - n;
+
+        let y = interpolate ? x.map((x, i) => currentTaylor[i] * (1 - percentage) + percentage * taylor(x, n+1)) : currentTaylor;
+
 		Plotly.restyle("grafico", {
 			y: [
 				x.map(x => Math.sin(x)),
-				x.map(x => taylor(x, n))
+                y
 			],
 			name: [
 				"$\\sin(x)$",
@@ -132,6 +158,7 @@
         stopAnimation();
 
         a = 0;
+        currentTaylor = null;
         taylorMem.clear();
 
 		Plotly.restyle("grafico", {
